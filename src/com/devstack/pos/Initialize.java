@@ -20,4 +20,5 @@ public class Initialize extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
+
 }
