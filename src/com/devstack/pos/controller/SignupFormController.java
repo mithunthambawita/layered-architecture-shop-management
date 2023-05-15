@@ -1,5 +1,6 @@
 package com.devstack.pos.controller;
 
+import com.devstack.pos.util.PasswordManager;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +31,10 @@ public class SignupFormController {
             String sql = "INSERT INTO user VALUES (?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,txtEmail.getText());
-            preparedStatement.setString(2,txtPassword.getText());
+            preparedStatement.setString(2, PasswordManager.encryptPassword(txtPassword.getText()));
             if (preparedStatement.executeUpdate()>0){
                 new Alert(Alert.AlertType.CONFIRMATION,"User Save!").show();
+                clearFields();
             }
 
         }catch (ClassNotFoundException | SQLException e){
@@ -41,6 +43,12 @@ public class SignupFormController {
         }
 
     }
+
+    private void clearFields() {
+        txtPassword.clear();
+        txtEmail.clear();
+    }
+
     private void setUi(String url) throws IOException {
         Stage stage = (Stage)context.getScene().getWindow();
         stage.setScene(
